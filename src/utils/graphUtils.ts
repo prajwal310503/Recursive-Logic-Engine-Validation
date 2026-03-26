@@ -38,7 +38,7 @@ export function simulateFlow(
   const steps: SimulationStep[] = [];
   const visited = new Set<NodeId>();
 
-  function dfs(id: NodeId, via: 'tree' | 'link'): void {
+  function dfs(id: NodeId, via: 'tree' | 'link', depth: number): void {
     if (visited.has(id)) return;
     visited.add(id);
 
@@ -50,17 +50,18 @@ export function simulateFlow(
       label: node.label,
       condition: node.condition || '(no condition)',
       via,
+      depth,
     });
 
     for (const childId of node.children) {
-      dfs(childId, 'tree');
+      dfs(childId, 'tree', depth + 1);
     }
 
     if (node.linkedTo) {
-      dfs(node.linkedTo, 'link');
+      dfs(node.linkedTo, 'link', depth);
     }
   }
 
-  dfs(rootId, 'tree');
+  dfs(rootId, 'tree', 0);
   return steps;
 }

@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { ArrowRight, X, AlertTriangle, Share2 } from 'lucide-react';
 import { NodeId } from '../types';
 import { useGraph } from '../store/graphContext';
 import { getSubtreeIds } from '../utils/graphUtils';
@@ -12,7 +13,7 @@ export default function LinkModal({ fromId, onClose }: LinkModalProps) {
   const { state, dispatch } = useGraph();
   const { nodes } = state;
 
-  const subtree = getSubtreeIds(fromId, nodes);
+  const subtree  = getSubtreeIds(fromId, nodes);
   const allOther = Object.values(nodes).filter((n) => n.id !== fromId);
 
   const handleSelect = useCallback(
@@ -24,14 +25,15 @@ export default function LinkModal({ fromId, onClose }: LinkModalProps) {
   );
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fade-in"
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fade-in"
       style={{ background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(8px)' }}
       onClick={onClose}
     >
       <div
-        className="w-full max-w-md rounded-2xl overflow-hidden animate-scale-in shadow-glass-lg"
+        className="w-full max-w-md rounded-2xl overflow-hidden animate-scale-in"
         style={{
-          background: 'rgba(10,10,25,0.95)',
+          background: 'rgba(10,10,25,0.97)',
           border: '1px solid rgba(255,255,255,0.1)',
           backdropFilter: 'blur(24px)',
           boxShadow: '0 24px 64px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.08)',
@@ -43,18 +45,22 @@ export default function LinkModal({ fromId, onClose }: LinkModalProps) {
           style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}
         >
           <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg flex items-center justify-center text-sm"
+            <div className="w-7 h-7 rounded-lg flex items-center justify-center"
               style={{ background: 'rgba(245,158,11,0.2)', border: '1px solid rgba(245,158,11,0.35)' }}
-            >⇢</div>
+            >
+              <Share2 size={13} color="#fbbf24" />
+            </div>
             <div>
               <h2 className="text-sm font-bold text-white">Link to a Node</h2>
               <p className="text-[10px] text-slate-500">Select the target node</p>
             </div>
           </div>
           <button onClick={onClose}
-            className="btn-press w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-white transition-colors text-lg"
+            className="btn-press w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-white transition-colors"
             style={{ background: 'rgba(255,255,255,0.05)' }}
-          >×</button>
+          >
+            <X size={14} />
+          </button>
         </div>
 
         {/* Node list */}
@@ -67,9 +73,7 @@ export default function LinkModal({ fromId, onClose }: LinkModalProps) {
           {allOther.map((node) => {
             const willCycle = subtree.has(node.id);
             return (
-              <li key={node.id}
-                style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}
-              >
+              <li key={node.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
                 <button
                   className="w-full text-left px-5 py-3 flex items-center gap-3 transition-all duration-150 group"
                   style={{ background: 'transparent' }}
@@ -89,11 +93,13 @@ export default function LinkModal({ fromId, onClose }: LinkModalProps) {
                       {node.condition || <span className="italic text-slate-600 font-sans">no condition</span>}
                     </p>
                     {willCycle && (
-                      <p className="text-[11px] text-red-400 mt-0.5">⚠ Will create a cycle</p>
+                      <p className="text-[11px] text-red-400 mt-0.5 flex items-center gap-1">
+                        <AlertTriangle size={10} /> Will create a cycle
+                      </p>
                     )}
                   </div>
 
-                  <span className="text-slate-600 group-hover:text-slate-400 transition-colors text-base shrink-0">→</span>
+                  <ArrowRight size={14} className="text-slate-600 group-hover:text-slate-400 transition-colors shrink-0" />
                 </button>
               </li>
             );
