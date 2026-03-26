@@ -60,7 +60,7 @@ export default function App() {
         <div className="h-[2px] w-full"
           style={{ background: 'linear-gradient(90deg, transparent 0%, #6366f1 30%, #8b5cf6 50%, #6366f1 70%, transparent 100%)' }}
         />
-        <div className="max-w-5xl mx-auto px-4 py-3 flex items-center gap-2 flex-wrap">
+        <div className="max-w-5xl mx-auto px-3 sm:px-4 py-2 sm:py-3 flex items-center gap-1.5 sm:gap-2 flex-wrap">
 
           {/* Back */}
           {rootId && (
@@ -90,14 +90,14 @@ export default function App() {
 
           {/* Search */}
           {rootId && (
-            <div className="relative">
+            <div className="relative hidden sm:block">
               <Search size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search nodes…"
-                className="pl-7 pr-3 py-1.5 rounded-xl text-xs text-slate-300 placeholder-slate-600 outline-none transition-all duration-200 w-32 focus:w-44 input-glow"
+                className="pl-7 pr-3 py-1.5 rounded-xl text-xs text-slate-300 placeholder-slate-600 outline-none transition-all duration-200 w-28 focus:w-40 input-glow"
                 style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}
               />
             </div>
@@ -105,7 +105,7 @@ export default function App() {
 
           {/* Toolbar buttons */}
           {rootId && (
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-1 sm:gap-1.5">
               {/* Undo */}
               <button onClick={undo} disabled={!canUndo}
                 className={`${btnBase} w-8 h-8 p-0 justify-center`}
@@ -145,7 +145,7 @@ export default function App() {
 
           {/* Simulate */}
           <button onClick={handleSimulate} disabled={!rootId || hasCycle}
-            className={`btn-press relative flex items-center gap-2 text-sm font-semibold px-4 py-2.5 rounded-xl transition-all duration-200 overflow-hidden shrink-0`}
+            className={`btn-press relative flex items-center gap-1.5 text-xs sm:text-sm font-semibold px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl transition-all duration-200 overflow-hidden shrink-0`}
             style={!rootId || hasCycle
               ? { background: 'rgba(255,255,255,0.04)', color: '#475569', border: '1px solid rgba(255,255,255,0.06)', cursor: 'not-allowed' }
               : { background: 'linear-gradient(135deg, #10b981, #059669)', color: 'white', boxShadow: '0 0 24px rgba(16,185,129,0.4)', border: '1px solid rgba(16,185,129,0.3)' }
@@ -158,6 +158,23 @@ export default function App() {
             }
           </button>
         </div>
+
+        {/* Mobile search bar */}
+        {rootId && (
+          <div className="sm:hidden px-3 pb-2">
+            <div className="relative">
+              <Search size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search nodes…"
+                className="w-full pl-7 pr-3 py-1.5 rounded-xl text-xs text-slate-300 placeholder-slate-600 outline-none transition-all duration-200 input-glow"
+                style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}
+              />
+            </div>
+          </div>
+        )}
 
         {/* Import error toast */}
         {importError && (
@@ -196,7 +213,7 @@ export default function App() {
       )}
 
       {/* ── Main content ── */}
-      <main className="max-w-5xl mx-auto px-5 py-10">
+      <main className="max-w-5xl mx-auto px-2 sm:px-5 py-6 sm:py-10">
         {!rootId
           ? <EmptyState onInit={() => dispatch({ type: 'INIT_ROOT' })} onImport={handleImport} />
           : (
