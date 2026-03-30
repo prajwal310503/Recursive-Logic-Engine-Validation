@@ -121,6 +121,7 @@ body::after {
 #root {
   position: relative;
   z-index: 1;
+  overflow-x: hidden;
 }
 
 /* Input focus glow */

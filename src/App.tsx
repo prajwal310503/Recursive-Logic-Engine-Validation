@@ -5,7 +5,7 @@ import {
   GitBranch, RefreshCw,
 } from 'lucide-react';
 import { useGraph } from './store/graphContext';
-import NodeCard from './components/NodeCard';
+import FlatTree from './components/FlatTree';
 import SimulatePanel from './components/SimulatePanel';
 import StatsPanel from './components/StatsPanel';
 import { simulateFlow } from './utils/graphUtils';
@@ -213,14 +213,10 @@ export default function App() {
       )}
 
       {/* ── Main content ── */}
-      <main className="max-w-5xl mx-auto px-2 sm:px-5 py-6 sm:py-10">
+      <main className="max-w-5xl mx-auto px-2 sm:px-5 py-6 sm:py-10 overflow-x-hidden">
         {!rootId
           ? <EmptyState onInit={() => dispatch({ type: 'INIT_ROOT' })} onImport={handleImport} />
-          : (
-            <div className="animate-fade-up">
-              <NodeCard nodeId={rootId} depth={0} searchQuery={searchQuery} />
-            </div>
-          )
+          : <FlatTree rootId={rootId} searchQuery={searchQuery} />
         }
       </main>
 
